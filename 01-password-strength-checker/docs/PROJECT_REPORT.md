@@ -1,31 +1,36 @@
 # Project Report — Password Strength Checker
 
-## Abstract
-A local Python utility that evaluates password quality through length, character diversity, common-password detection, repetition checks, and approximate entropy.
+## 1. Introduction
+Password quality is a fundamental authentication-security concern. This project evaluates passwords locally using multiple characteristics.
 
-## Problem Statement
-Weak passwords are a major authentication risk. Users need immediate feedback without sending passwords to an external service.
+## 2. Objectives
+- Measure password quality consistently.
+- Demonstrate validation and regular expressions.
+- Estimate theoretical character-pool entropy.
+- Provide actionable recommendations without storing passwords.
 
-## Objectives
-- Evaluate password characteristics locally.
-- Explain weaknesses clearly.
-- Estimate entropy.
-- Avoid password storage/transmission.
+## 3. Methodology
+The program checks length, character classes, common-password membership, repeated characters, and predictable sequences. A score is converted into a human-readable strength level.
 
-## Modules
-1. Input
-2. Validation
-3. Character-class analysis
-4. Common-password check
-5. Entropy calculation
-6. Rating and recommendations
+## 4. Input and Output
+Input is a password entered locally. Output contains strength, estimated entropy, and recommendations. The password itself is not printed by the normal input flow.
 
-## Example
-Input: `BlueRiver!47Moon`
-Expected: strong/very strong classification with high estimated entropy.
+## 5. Example
+A long password containing uppercase, lowercase, numbers, and symbols receives a higher score than a short common password such as password.
 
-## Limitations
-The score is educational and is not a substitute for enterprise password policy or password-breach screening.
+## 6. Testing
+Run: python -m pytest tests
 
-## Future Scope
-Use zxcvbn-style analysis, breached-password checks through privacy-preserving methods, GUI support, and configurable organizational policies.
+Tests cover strong passwords, common passwords, and short passwords.
+
+## 7. Security Considerations
+Use synthetic passwords for demonstrations. Never store or commit real credentials.
+
+## 8. Limitations
+Rule-based scoring cannot determine whether a password appears in every breach corpus and does not replace a password manager or enterprise authentication policy.
+
+## 9. Future Enhancements
+Offline breached-password screening, configurable policies, GUI support, and broader test coverage.
+
+## 10. Conclusion
+The project demonstrates practical password-security concepts while keeping processing local and simple.
