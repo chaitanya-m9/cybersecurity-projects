@@ -1,23 +1,32 @@
-from cryptography.fernet import Fernet
-from pathlib import Path
+"""Authenticated text encryption demo using Fernet.
+Author: Chaitanya Mediboyina
+"""
+from cryptography.fernet import Fernet, InvalidToken
 
-KEY_FILE = Path("secret.key")
+def generate_key() -> str:
+    return Fernet.generate_key().decode()
 
-def get_key():
-    if KEY_FILE.exists(): return KEY_FILE.read_bytes()
-    key = Fernet.generate_key(); KEY_FILE.write_bytes(key); return key
+def encrypt_text(plaintext: str, key: str) -> str:
+    return Fernet(key.encode()).encrypt(plaintext.encode()).decode()
+
+def decrypt_text(ciphertext: str, key: str) -> str:
+    try:
+        return Fernet(key.encode()).decrypt(ciphertext.encode()).decode()
+    except InvalidToken as exc:
+        raise ValueError("Invalid key or modified ciphertext.") from exc
 
 def main():
-    f = Fernet(get_key())
-    print("1) Encrypt  2) Decrypt")
-    choice = input("Choice: ").strip()
+    key = input("Fernet key (press Enter to generate): ").strip()
+    if not key:
+        key = generate_key()
+        print("Generated key - store it securely:", key)
+    choice = input("1) Encrypt  2) Decrypt: ").strip()
     if choice == "1":
-        text = input("Plaintext: ")
-        print("Ciphertext:", f.encrypt(text.encode()).decode())
+        print("Ciphertext:", encrypt_text(input("Plaintext: "), key))
     elif choice == "2":
-        token = input("Ciphertext: ")
-        try: print("Plaintext:", f.decrypt(token.encode()).decode())
-        except Exception: print("Decryption failed: invalid ciphertext or key.")
-    else: print("Invalid choice")
+        print("Plaintext:", decrypt_text(input("Ciphertext: "), key))
+    else:
+        print("Invalid choice.")
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
