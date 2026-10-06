@@ -1,10 +1,30 @@
 # Network Scanner
 
-Authorized-lab TCP connect scanner for discovering reachable services on a host. It uses Python sockets and reports open ports; it does not exploit services.
+## Author
+**Chaitanya Mediboyina** — https://github.com/chaitanya-m9
+
+## Purpose
+A small TCP connectivity scanner for learning socket programming, basic network discovery, and defensive asset inventory.
+
+## Objectives
+- Accept an explicitly chosen host and port range.
+- Test TCP connectivity with controlled timeouts.
+- Report reachable ports without exploitation.
 
 ## Run
-```bash
-python src/scanner.py 127.0.0.1 --ports 1-1024
-```
+python src/scanner.py 127.0.0.1 --start 1 --end 1024
 
-Only scan hosts you own or have explicit permission to test.
+## Safety
+Only scan hosts and networks that you own or have explicit permission to assess. Use a local virtual machine or lab network for demonstrations.
+
+## Workflow
+Target + port range → TCP connection attempt → timeout/connection result → open-port report.
+
+## Testing
+python -m pytest tests
+
+## Limitations
+A TCP connect scan cannot identify every service and can be affected by firewalls, NAT, rate limits, and host availability.
+
+## Future Work
+Rate-limited concurrency, service identification in a lab, JSON/CSV output, IPv6 support, and richer unit tests.
