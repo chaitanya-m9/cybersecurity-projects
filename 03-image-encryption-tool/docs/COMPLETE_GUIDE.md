@@ -81,3 +81,79 @@ G-->O[End]
 M-->O
 N-->O
 ```
+\n
+## Recruiter Review — Sample Input, Output & Technical Evidence
+
+### Sample Input
+~~~text
+File: input.jpg
+Operation: encrypt
+Command:
+python src/image_crypto.py encrypt input.jpg encrypted.bin
+~~~
+
+### Representative Output
+~~~text
+Image encryption started
+Input: input.jpg
+Output: encrypted.bin
+Algorithm: AES-GCM
+Status: Encryption successful
+~~~
+
+### Sample Decryption
+~~~text
+python src/image_crypto.py decrypt encrypted.bin restored.jpg
+~~~
+
+Expected:
+~~~text
+Authentication successful
+Decryption successful
+Output: restored.jpg
+~~~
+
+### Strong Verification Method
+Calculate SHA-256 for both original and restored files.
+
+~~~text
+Original SHA-256 : <hash A>
+Restored SHA-256 : <hash A>
+Verification     : MATCH
+~~~
+
+Matching hashes demonstrate that the restored bytes are identical to the original bytes.
+
+### Tampering Test
+Modify a byte in encrypted.bin and attempt decryption.
+
+~~~text
+Expected: authentication failure
+Expected security behavior: modified ciphertext is rejected
+~~~
+
+### Test Evidence
+| Test | Expected |
+|---|---|
+| JPEG input | Encryption succeeds |
+| PNG input | Encryption succeeds |
+| Correct key | Image restored |
+| Wrong key | Rejected |
+| Modified ciphertext | Rejected |
+| Missing input | Clear error |
+| Corrupt container | Safe failure |
+
+### What a Recruiter Can Evaluate
+- AES-GCM knowledge
+- Binary file handling
+- Nonce management
+- Authenticated encryption
+- Hash-based verification
+- Error handling and test design
+- Secure key handling
+
+### Interview Discussion
+A strong explanation is: AES provides symmetric encryption, GCM adds authenticated integrity, the nonce must be handled correctly, and the key must remain secret.
+
+### Portfolio Demonstration
+The project can be demonstrated end-to-end without exposing any confidential image or key: encrypt a sample image, decrypt it, compare hashes, then tamper with ciphertext and show rejection.
