@@ -80,3 +80,70 @@ I-->J[Recommendations]
 J-->K[Display result]
 K-->L[End]
 ```
+\n
+## Recruiter Review — Sample Input, Output & Technical Evidence
+
+### Sample Input 1 — Weak Password
+~~~text
+Enter password: abc123
+~~~
+
+### Sample Output
+~~~text
+Length: 6
+Lowercase: Yes
+Uppercase: No
+Digits: Yes
+Special characters: No
+Common/predictable pattern: Detected
+Strength: Weak
+Recommendation: Use a longer, unique passphrase with stronger diversity.
+~~~
+
+### Sample Input 2 — Stronger Fictional Password
+~~~text
+Enter password: BlueTiger!2026
+~~~
+
+### Representative Output
+~~~text
+Length: 14
+Lowercase: Yes
+Uppercase: Yes
+Digits: Yes
+Special characters: Yes
+Common password: No
+Repeated-character warning: No
+Estimated entropy: [calculated by implementation]
+Strength: Strong
+~~~
+
+The exact numerical score is implementation-dependent; the important engineering evidence is that multiple security characteristics contribute to the result.
+
+### Test Evidence
+| Test | Input | Expected |
+|---|---|---|
+| PW-01 | Empty | Safe handling |
+| PW-02 | abc123 | Weak classification |
+| PW-03 | password | Common-password warning |
+| PW-04 | BlueTiger!2026 | Higher score |
+| PW-05 | AAAAAAAAAAAA | Repetition warning |
+| PW-06 | Long fictional passphrase | Stronger result |
+
+### What a Recruiter Can Evaluate
+- Python input handling and validation
+- Regular-expression based character analysis
+- Entropy/security concepts
+- Rule-based risk scoring
+- Defensive treatment of credential data
+- Ability to explain limitations rather than overclaiming security
+
+### Technical Interview Discussion
+**Why is length important?** Increasing length generally increases the search space substantially.
+
+**Why is a common-password check necessary?** Attackers prioritize known/common passwords instead of blindly trying every combination.
+
+**Why is this only a heuristic?** Real password security also depends on uniqueness, breach exposure, MFA, authentication controls, and password storage.
+
+### Portfolio Demonstration
+A recruiter can reproduce the project locally, compare weak and strong fictional inputs, inspect the source code, and review the documented test cases without requiring any external service.
