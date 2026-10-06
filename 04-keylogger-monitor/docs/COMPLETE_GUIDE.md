@@ -79,3 +79,75 @@ J-->|Yes|D
 J-->|No|K[JSON report]
 K-->L[End]
 ```
+\n
+## Recruiter Review — Sample Input, Output & Technical Evidence
+
+### Safe Synthetic Input
+Directory:
+~~~text
+lab_samples/
+├── normal_notes.txt
+├── keylogger.py
+└── readme.txt
+~~~
+
+The test file should contain only a harmless detection marker, for example:
+~~~python
+# LAB ONLY
+# Test indicator: keylogger
+~~~
+
+It must not contain keyboard hooks, credential capture, persistence, or transmission logic.
+
+### Command
+~~~powershell
+python src/monitor.py --path ./lab_samples
+~~~
+
+### Representative Output
+~~~json
+{
+  "scan_path": "./lab_samples",
+  "detections": [
+    {
+      "file": "keylogger.py",
+      "reason": "suspicious filename",
+      "sha256": "<calculated SHA-256>"
+    }
+  ]
+}
+~~~
+
+The exact hash depends on the file bytes.
+
+### Detection Test Matrix
+| Test | Expected |
+|---|---|
+| Empty directory | No detections |
+| keylogger.py | Detection |
+| Static indicator string | Detection |
+| normal_notes.txt | No detection |
+| Missing path | Clear error |
+| Multiple suspicious samples | Multiple records |
+
+### False-Positive Review
+A filename or string match is an indicator, not proof of malware. Professional detection should combine multiple signals and provide context for analyst review.
+
+### What a Recruiter Can Evaluate
+- Defensive security mindset
+- IOC/static-analysis concepts
+- SHA-256 evidence generation
+- JSON reporting
+- False-positive awareness
+- Safe project boundaries
+- Endpoint-security fundamentals
+
+### Interview Discussion
+**Why hash a suspicious file?** To identify the exact artifact and make later comparison possible.
+
+**Why not automatically label it malware?** A detection rule can match legitimate security research or developer files.
+
+**How would you improve it?** Add configurable indicators, severity, allowlists, file metadata, behavioral telemetry, and controlled SIEM integration.
+
+### Portfolio Demonstration
+This project is especially useful in an interview because it demonstrates that the candidate understands the difference between offensive capability and defensive detection.
