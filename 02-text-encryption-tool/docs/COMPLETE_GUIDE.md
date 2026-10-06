@@ -79,3 +79,73 @@ F-->M[End]
 K-->M
 L-->M
 ```
+\n
+## Recruiter Review — Sample Input, Output & Technical Evidence
+
+### Sample Input
+~~~text
+Operation: Encrypt
+Plaintext: Cybersecurity lab message
+~~~
+
+### Representative Encryption Output
+~~~text
+Encryption successful.
+Ciphertext: gAAAAAB...<generated ciphertext>...
+Key file: secret.key
+~~~
+
+Fernet ciphertext changes between runs because the encryption process uses randomized values. The actual secret key must never be published.
+
+### Sample Decryption Input
+~~~text
+Operation: Decrypt
+Ciphertext: gAAAAAB...<generated ciphertext>...
+Key: secret.key
+~~~
+
+### Expected Output
+~~~text
+Decryption successful.
+Plaintext: Cybersecurity lab message
+~~~
+
+### Tampering Test
+Change one character in the ciphertext.
+
+~~~text
+Expected: decryption/authentication failure
+Reason: ciphertext integrity verification failed
+~~~
+
+### Test Evidence
+| Test | Expected Result |
+|---|---|
+| Normal plaintext | Encrypted successfully |
+| Same key + valid ciphertext | Original restored |
+| Unicode text | Correct round trip |
+| Wrong key | Failure |
+| Modified ciphertext | Authentication failure |
+| Missing key | Clear failure |
+| Empty input | Safe handling |
+
+### What a Recruiter Can Evaluate
+- Understanding of symmetric cryptography
+- Correct use of a standard cryptographic library
+- Key-management awareness
+- Authentication/integrity concepts
+- Error handling
+- Secure repository practices
+
+### Security Design Decision
+The project deliberately does not implement its own encryption primitive. Using an established cryptographic library is safer and more maintainable than attempting to write AES/Fernet internals manually.
+
+### Interview Discussion
+**Confidentiality:** unauthorized parties should not read the plaintext.
+
+**Integrity/authentication:** modification of protected ciphertext should be detectable.
+
+**Key management:** encryption is only as strong operationally as the protection of its secret key.
+
+### Portfolio Demonstration
+A recruiter can run one encrypt/decrypt round trip and then deliberately modify the ciphertext to observe the security control in action.
