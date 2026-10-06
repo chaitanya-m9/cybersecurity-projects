@@ -1,24 +1,36 @@
 # Project Report — Image Encryption Tool
 
-## Abstract
-A file-level image encryption project using AES-256-GCM authenticated encryption.
+## 1. Introduction
+Images can contain sensitive personal and business information. This project demonstrates how binary image data can be protected with authenticated encryption.
 
-## Objectives
-- Protect image confidentiality.
-- Detect unauthorized modification.
-- Restore the original bytes after successful decryption.
+## 2. Objectives
+- Encrypt image bytes.
+- Detect ciphertext modification.
+- Recover the original bytes with the correct key.
+- Teach nonce and authenticated-encryption concepts.
 
-## Workflow
-Image → bytes → random nonce → AES-GCM → encrypted container → AES-GCM verification → original bytes.
+## 3. Technology
+Python, AES-GCM, and the cryptography library.
 
-## Example
-`photo.jpg` → `encrypted.bin` → `restored.jpg`.
+## 4. Methodology
+The program reads the source file as bytes, generates a fresh nonce, encrypts the bytes with AES-GCM, and stores a format marker, nonce, and authenticated ciphertext. Decryption verifies authenticity before writing the recovered bytes.
 
-## Security
-AES-GCM provides confidentiality and integrity. Nonce uniqueness is essential. Keys must be stored separately from encrypted data.
+## 5. Example Workflow
+Generate key → encrypt image.jpg to image.enc → decrypt image.enc to recovered.jpg → compare SHA-256 hashes.
 
-## Testing
-Test JPEG/PNG files, tampered ciphertext, wrong key, missing input, and round-trip byte equality.
+## 6. Testing
+Run: python -m pytest tests
 
-## Future Scope
-Password-based key derivation, secure key vaults, GUI preview, batch encryption, and metadata policy controls.
+The automated test encrypts synthetic binary data and verifies byte-for-byte recovery.
+
+## 7. Security Considerations
+Keep the AES key secret and never reuse a nonce with the same key. Do not upload sensitive images to the repository.
+
+## 8. Limitations
+No enterprise key management, access control, secure deletion, or metadata policy is included.
+
+## 9. Future Enhancements
+GUI, batch processing, secure key storage, metadata controls, and richer file validation.
+
+## 10. Conclusion
+The project demonstrates practical confidentiality and integrity protection for binary/image data.
