@@ -80,3 +80,76 @@ H-->|No|I[Apply threshold]
 I-->J[Generate summary and alerts]
 J-->K[End]
 ```
+\n
+## Recruiter Review — Sample Input, Output & Technical Evidence
+
+### Sample Input
+~~~text
+2026-10-06T10:00:01Z FAILED_LOGIN user=admin src=192.0.2.10
+2026-10-06T10:00:04Z FAILED_LOGIN user=admin src=192.0.2.10
+2026-10-06T10:00:07Z FAILED_LOGIN user=test src=192.0.2.10
+2026-10-06T10:00:10Z FAILED_LOGIN user=admin src=192.0.2.10
+2026-10-06T10:00:14Z FAILED_LOGIN user=test src=192.0.2.10
+2026-10-06T10:00:18Z FAILED_LOGIN user=admin src=198.51.100.25
+~~~
+
+The IP addresses shown are documentation/example ranges.
+
+### Representative Output
+~~~text
+Failed login summary
+--------------------
+192.0.2.10 : 5 failures
+ALERT: threshold reached
+
+198.51.100.25 : 1 failure
+No threshold alert
+~~~
+
+### Boundary Test
+Four failures:
+~~~text
+Count = 4
+Expected = No alert
+~~~
+
+Five failures:
+~~~text
+Count = 5
+Expected = Alert
+~~~
+
+This verifies the detection-rule boundary.
+
+### Test Matrix
+| Test | Expected |
+|---|---|
+| Valid event | Parsed |
+| Four failures | No threshold alert |
+| Five failures | Alert |
+| Multiple users | Correct aggregation |
+| Malformed line | Safe handling |
+| Empty log | Empty summary |
+| Missing file | Clear error |
+
+### Analyst Interpretation
+Five failed logins are a detection signal, not automatic proof of compromise. An analyst should correlate time, account status, successful logins, device context, and other telemetry before deciding on an incident.
+
+### What a Recruiter Can Evaluate
+- Python log parsing
+- Event normalization
+- Security analytics
+- Aggregation and threshold rules
+- Detection engineering concepts
+- Analyst reasoning
+- Secure handling of security logs
+
+### Interview Discussion
+**Why normalize events?** Consistent fields make searching, aggregation, correlation, and detection easier.
+
+**Why use synthetic logs?** They demonstrate functionality without exposing real credentials or organizational data.
+
+**How would production detection improve?** Add time windows, multiple rules, severity, baselines, correlation, alert deduplication, and centralized telemetry.
+
+### Portfolio Demonstration
+A recruiter can inspect the supplied synthetic log, run the analyzer, add controlled events, and observe the alert threshold change. This demonstrates both coding and security-analysis reasoning.
