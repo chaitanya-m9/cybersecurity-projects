@@ -1,0 +1,2 @@
+# Contributing
+Use clear commits, keep dependencies minimal, add tests for behavior changes, and never commit secrets or real sensitive data. Network and monitoring functionality must remain within authorized defensive or educational scope.
