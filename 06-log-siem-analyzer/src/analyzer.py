@@ -1,18 +1,43 @@
-import argparse,re
+"""Defensive authentication-log analyzer.
+Author: Chaitanya Mediboyina
+"""
+import argparse
+import re
 from collections import Counter
-FAIL=re.compile(r"(?P<ts>\S+)\s+FAILED_LOGIN\s+user=(?P<user>\S+)\s+src=(?P<src>\S+)")
+
+FAIL = re.compile(r"(?P<ts>\S+)\s+FAILED_LOGIN\s+user=(?P<user>\S+)\s+src=(?P<src>\S+)")
+
 def analyze(path):
-    ips=Counter(); users=Counter(); total=0
-    for line in open(path,encoding="utf-8"):
-        m=FAIL.search(line)
-        if m: total+=1; ips[m["src"]]+=1; users[m["user"]]+=1
-    return total,ips,users
-p=argparse.ArgumentParser(); p.add_argument("log"); a=p.parse_args()
-total,ips,users=analyze(a.log)
-print(f"Failed logins: {total}\n\nBy source IP:")
-for ip,n in ips.most_common(): print(f"{ip}: {n}")
-print("\nBy username:")
-for u,n in users.most_common(): print(f"{u}: {n}")
-print("\nAlerts (threshold >=5):")
-for ip,n in ips.items():
-    if n>=5: print(f"ALERT {ip}: {n} failed logins")
+    ips, users = Counter(), Counter()
+    total = 0
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            match = FAIL.search(line)
+            if match:
+                total += 1
+                ips[match["src"]] += 1
+                users[match["user"]] += 1
+    return total, ips, users
+
+def main():
+    parser = argparse.ArgumentParser(description="Analyze synthetic authentication logs.")
+    parser.add_argument("log")
+    parser.add_argument("--threshold", type=int, default=5)
+    args = parser.parse_args()
+    if args.threshold < 1:
+        parser.error("threshold must be positive")
+    total, ips, users = analyze(args.log)
+    print(f"Failed logins: {total}")
+    print("By source IP:")
+    for ip, count in ips.most_common():
+        print(f"{ip}: {count}")
+    print("By username:")
+    for user, count in users.most_common():
+        print(f"{user}: {count}")
+    print("Alerts:")
+    for ip, count in ips.items():
+        if count >= args.threshold:
+            print(f"ALERT {ip}: {count} failed logins")
+
+if __name__ == "__main__":
+    main()
