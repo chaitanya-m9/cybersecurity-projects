@@ -1,148 +1,42 @@
-# Complete Cybersecurity Projects Guide
+# Complete Cybersecurity Project Guide
 
-## 1. Purpose
+## 1. Author and Ownership
+**Author:** Chaitanya Mediboyina  
+**GitHub:** https://github.com/chaitanya-m9  
+**Repository:** cybersecurity-projects
 
-This repository is a practical cybersecurity portfolio designed to demonstrate secure programming, cryptography, endpoint monitoring, networking, and security-log analysis.
+The projects in this repository are organized as an individual cybersecurity learning and portfolio collection. Each project documents its purpose, implementation approach, source code, testing process, limitations, and future improvements.
 
-### Projects
-1. Password Strength Checker
-2. Text Encryption Tool
-3. Image Encryption Tool
-4. Safe Keylogger Monitor / Detection
-5. Network Scanner
-6. Log / SIEM Analyzer
-
-## 2. Recommended Learning Order
-
-Follow the projects in this order:
-
-**Project 1 → Project 2 → Project 3 → Project 4 → Project 5 → Project 6**
-
-This moves from authentication fundamentals to cryptography, endpoint security, networking, and finally SOC/SIEM analysis.
-
-## 3. Common Environment Setup
-
-### Windows
-
-Install Python 3.x and verify:
-
-```powershell
-python --version
-python -m pip --version
-```
-
-Create a virtual environment:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-If PowerShell blocks activation, use:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv\Scripts\Activate.ps1
-```
-
-Install project dependencies from the relevant project directory:
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-### Linux/macOS
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install -r requirements.txt
-```
-
-## 4. Project Workflow
-
-For every project use this lifecycle:
-
+## 2. Recommended Workflow
 1. Read the project README.
-2. Read its architecture document.
-3. Create a virtual environment where dependencies are required.
-4. Install requirements.
-5. Run the basic example.
-6. Test normal and invalid input.
-7. Read the source code line by line.
-8. Record observations.
-9. Modify one feature.
-10. Retest.
-11. Document the result.
-12. Commit the project to GitHub.
+2. Review the architecture document.
+3. Install the listed requirements.
+4. Inspect the source code.
+5. Run the documented examples.
+6. Execute the tests.
+7. Review limitations and security considerations.
+8. Record improvements using meaningful Git commits.
 
-## 5. Documentation Expected for a College Project
+## 3. Evidence That a Project Was Developed
+A professional repository should show more than source code. This repository therefore uses:
+- named author information;
+- project objectives and scope;
+- implementation details;
+- source code;
+- requirements;
+- repeatable test cases;
+- architecture documentation;
+- sample data where applicable;
+- limitations and future work;
+- meaningful Git commits.
 
-For each project prepare:
+## 4. Security Rules
+Never commit passwords, API keys, tokens, private keys, certificates containing secrets, personal documents, or production logs. Use synthetic data for demonstrations.
 
-- Title
-- Abstract
-- Introduction
-- Problem statement
-- Objectives
-- Existing system
-- Proposed system
-- Requirements
-- Technologies
-- System architecture
-- Modules
-- Algorithm/workflow
-- Implementation
-- Test cases
-- Results
-- Security considerations
-- Limitations
-- Future enhancements
-- Conclusion
-- References
-- Viva questions
+For dual-use tools, operate only in an authorized lab. The keylogger project is intentionally defensive and does not implement keystroke capture.
 
-## 6. Git Workflow
+## 5. Project Lifecycle
+Problem Definition → Requirements → Design / Architecture → Implementation → Testing → Security Review → Documentation → GitHub Portfolio → Future Improvements
 
-After making changes:
-
-```bash
-git status
-git add .
-git commit -m "Improve project documentation"
-git push
-```
-
-Never commit:
-
-- passwords
-- API keys
-- private keys
-- personal data
-- real authentication logs
-- captured keystrokes
-- unauthorized scan results
-
-## 7. Ethical Use
-
-Network scanning and security monitoring must only be performed against systems you own or have explicit permission to test.
-
-The keylogger project is deliberately defensive. It does not capture, store, transmit, or replay keystrokes.
-
-## 8. Portfolio Goal
-
-After completing the six projects, you should be able to explain:
-
-- CIA triad
-- password security
-- entropy
-- authenticated encryption
-- AES-GCM
-- endpoint detection
-- TCP and ports
-- network reconnaissance
-- log parsing
-- brute-force detection
-- SIEM concepts
-- secure coding
-- Git/GitHub workflows
+## 6. Portfolio Use
+When presenting a project to a recruiter or faculty member, explain the problem, technology choice, implementation, testing, security considerations, limitations, and next improvements. This demonstrates both implementation ability and security thinking.
