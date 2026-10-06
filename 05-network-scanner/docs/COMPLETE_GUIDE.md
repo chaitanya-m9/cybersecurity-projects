@@ -79,3 +79,64 @@ J-->|Yes|D
 J-->|No|K[Display results]
 K-->L[End]
 ```
+\n
+## Recruiter Review — Sample Input, Output & Technical Evidence
+
+### Controlled Lab Input
+Start a local service only on the candidate's own computer:
+
+~~~powershell
+python -m http.server 8000 --bind 127.0.0.1
+~~~
+
+Then scan the controlled localhost range:
+
+~~~powershell
+python src/scanner.py 127.0.0.1 --ports 7995-8005
+~~~
+
+### Representative Output
+~~~text
+Target: 127.0.0.1
+Port range: 7995-8005
+Scanning...
+
+Open ports:
+8000
+
+Scan complete.
+~~~
+
+Stop the local service and repeat. The expected result is that port 8000 is no longer reported as open.
+
+### Test Matrix
+| Test | Expected |
+|---|---|
+| Localhost, known service | Open port detected |
+| Service stopped | Port not open |
+| Closed port | Not reported open |
+| Single-port range | Correct result |
+| Invalid range | Validation error |
+| Timeout/unavailable endpoint | Safe handling |
+
+### Technical Interpretation
+An open TCP port means a connection was accepted/reachable during the test. It does **not** mean the service is vulnerable. Vulnerability assessment requires additional authorized analysis.
+
+### What a Recruiter Can Evaluate
+- Python socket programming
+- TCP fundamentals
+- Port concepts
+- Timeout handling
+- Input validation
+- Network-security awareness
+- Responsible reconnaissance practices
+
+### Interview Discussion
+**Why localhost?** It creates a reproducible and authorization-safe demonstration.
+
+**Why use a timeout?** A scanner should not wait indefinitely for an unresponsive endpoint.
+
+**How could it be improved?** Controlled concurrency, IPv6, service identification, structured output, rate limiting, and automated tests.
+
+### Portfolio Demonstration
+The strongest demo is reproducible: start a known local service, detect its port, stop the service, and confirm the result changes.
